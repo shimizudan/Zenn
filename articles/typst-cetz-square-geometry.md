@@ -3,7 +3,7 @@ title: "TypstのCeTZパッケージで幾何学図形を描く：正方形と点
 emoji: "📐"
 type: "idea"
 topics: ["typst", "cetz", "数学", "幾何学", "可視化"]
-published: false
+published: true
 ---
 
 :::message

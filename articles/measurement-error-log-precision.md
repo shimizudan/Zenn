@@ -3,8 +3,12 @@ title: "対数の近似値の危険性：Julia Measurements.jlで誤差を可視
 emoji: "🌻"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: [julia, 数学, 誤差解析]
-published: false
+published: true
 ---
+
+:::message
+この記事は[Julia Advent Calendar 2025](https://qiita.com/advent-calendar/2025/julia)の12月5日の記事です。
+:::
 
 ## はじめに
 
