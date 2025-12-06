@@ -5,7 +5,6 @@ type: "idea"
 topics: ["typst", "cetz", "数学", "立体幾何", "3D"]
 published: true # trueを指定する
 published_at: 2025-12-07 00:03 # 未来の日時を指定する
-publication_name: "typstn"
 ---
 
 :::message
