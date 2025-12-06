@@ -3,7 +3,8 @@ title: "TypstのCeTZパッケージで3D立方体を描く：対角線と平面�
 emoji: "🎲"
 type: "idea"
 topics: ["typst", "cetz", "数学", "立体幾何", "3D"]
-published: false
+published: true # trueを指定する
+published_at: 2025-12-7 00:03 # 未来の日時を指定する
 publication_name: "typstn"
 ---
 
