@@ -3,8 +3,13 @@ title: "JuliaのLaTeX形式でのUnicode入力完全ガイド：π、θから演
 emoji: "🔣"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [julia, unicode, latex, vscode, jupyter]
-published: false
+published: true
+published_at: 2025-12-12 00:03
 ---
+
+この記事は以下のAdvent Calendarの12月12日の記事です：
+- [Julia Advent Calendar 2025](https://qiita.com/advent-calendar/2025/julia)
+- [TeX & LaTeX Advent Calendar 2025](https://adventar.org/calendars/12019)
 
 ## はじめに
 
