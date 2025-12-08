@@ -261,7 +261,7 @@ $$
 - $f(n_1, n_2, \ldots, n_m)$ は友田の公式で求めた円順列の総数
 - $N = n_1 + n_2 + \cdots + n_m$（球の総数）
 - $\lfloor x \rfloor$ は床関数（小数点以下切り捨て）
-- 奇数個の種類の数 $m = |\{i \mid n_i \text{ は奇数}\}|$
+- 奇数個の種類の数 $M = |\{i \mid n_i \text{ は奇数}\}|$
 
 ### 対称配置の条件
 
@@ -288,9 +288,9 @@ function juzu(a)
     N = sum(a)
     t = enkan(a)  # 円順列の数
     q = div.(a, 2)
-    m = count(isodd, a)  # 奇数個の種類の数
+    M = count(isodd, a)  # 奇数個の種類の数
 
-    if m ≤ 2
+    if M ≤ 2
         # 対称配置が存在する場合
         t += multinomial(q...)
     end
@@ -299,18 +299,18 @@ function juzu(a)
 end
 ```
 
-**$m \leq 2$ の場合の追加項** `multinomial(q...)` は、各種類をちょうど半分ずつ（切り捨て）使った配置の数です。これが対称配置の候補となります。
+**$M \leq 2$ の場合の追加項** `multinomial(q...)` は、各種類をちょうど半分ずつ（切り捨て）使った配置の数です。これが対称配置の候補となります。
 
 ### 従来の4つの場合分けとの関係
 
 従来は以下の4つに分けていました：
 
-1. **全て偶数個**：$m = 0$
-2. **奇数1色のみ**：$m = 1$
-3. **奇数2色**：$m = 2$
-4. **奇数3色以上**：$m \geq 3$
+1. **全て偶数個**：$M = 0$
+2. **奇数1色のみ**：$M = 1$
+3. **奇数2色**：$M = 2$
+4. **奇数3色以上**：$M \geq 3$
 
-この4つを **$m \leq 2$** という単一条件に統合したのが、上記の公式の革新的なポイントです。
+この4つを **$M \leq 2$** という単一条件に統合したのが、上記の公式の革新的なポイントです。
 
 ## Julia実装
 
@@ -363,9 +363,9 @@ function juzu(a)
     N = sum(a)
     t = enkan(a)
     q = div.(a, 2)
-    m = count(isodd, a)
+    M = count(isodd, a)
 
-    if m ≤ 2
+    if M ≤ 2
         t += multinomial(q...)
     end
 
@@ -425,9 +425,9 @@ function juzu(a::Vector{T}) where T<:Integer
     N = sum(a)
     t = BigInt(enkan(a))
     q = div.(a, 2)
-    m = count(isodd, a)
+    M = count(isodd, a)
 
-    if m ≤ 2
+    if M ≤ 2
         t += multinomial(q...)
     end
 

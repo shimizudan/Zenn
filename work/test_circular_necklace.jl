@@ -44,9 +44,9 @@ function juzu(a)
     N = sum(a)
     t = enkan(a)
     q = div.(a, 2)
-    m = count(isodd, a)
+    M = count(isodd, a)
 
-    if m ≤ 2
+    if M ≤ 2
         t += multinomial(q...)
     end
 
@@ -114,9 +114,9 @@ function juzu_big(a::Vector{T}) where T<:Integer
     N = sum(a)
     t = BigInt(enkan_big(a))
     q = div.(a, 2)
-    m = count(isodd, a)
+    M = count(isodd, a)
 
-    if m ≤ 2
+    if M ≤ 2
         t += multinomial_big(q...)
     end
 
