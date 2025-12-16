@@ -1,10 +1,15 @@
 ---
 title: "同じものを含む円順列・数珠順列の公式について"
 emoji: "📿"
-type: "tech" # tech: 技術記事 / idea: アイデア
+type: "idea" # tech: 技術記事 / idea: アイデア
 topics: [julia, 数学, 組合せ論, 数論]
-published: false
+published: true # trueを指定する
+published_at: 2025-12-25 00:03 # 未来の日時を指定する
+
 ---
+
+
+この記事は [日曜数学 Advent Calendar 2025](https://adventar.org/calendars/12125) の12月25日の記事です。
 
 ## はじめに
 
@@ -42,7 +47,7 @@ published: false
 
 ### 同じものを含む順列（多項係数）
 
-n個のうち、種類1がn₁個、種類2がn₂個、...、種類mがnₘ個あるとき（$n = n_1 + n_2 + \cdots + n_m$）、一列に並べる方法は：
+$n$個のうち、種類$1$が$n₁$個、種類$2$が$n₂$個、...、種類$m$が$nₘ$個あるとき（$n = n_1 + n_2 + \cdots + n_m$）、一列に並べる方法は：
 
 $$
 \frac{n!}{n_1! \cdot n_2! \cdots n_m!} = \binom{n}{n_1, n_2, \ldots, n_m}
@@ -60,7 +65,7 @@ $$
 
 ### 友田の公式
 
-m種類の球があり、各種類が $n_1, n_2, \ldots, n_m$ 個あるとき、円順列の総数は：
+$m$種類の球があり、各種類が $n_1, n_2, \ldots, n_m$ 個あるとき、円順列の総数は：
 
 $$
 f(n_1, n_2, \ldots, n_m) = \frac{1}{N} \sum_{k \mid l} \varphi(k) \binom{N/k}{n_1/k, n_2/k, \ldots, n_m/k}
@@ -252,8 +257,8 @@ m種類の球があり、各種類が $n_1, n_2, \ldots, n_m$ 個あるとき、
 $$
 g(n_1, n_2, \ldots, n_m) =
 \begin{cases}
-\displaystyle\frac{f(n_1, n_2, \ldots, n_m) + \binom{N/2}{\lfloor n_1/2 \rfloor, \lfloor n_2/2 \rfloor, \ldots, \lfloor n_m/2 \rfloor}}{2} & \text{(奇数個の種類が2種類以下)} \\[10pt]
-\displaystyle\frac{f(n_1, n_2, \ldots, n_m)}{2} & \text{(奇数個の種類が3種類以上)}
+\displaystyle\frac{f(n_1, n_2, \ldots, n_m) + \binom{N/2}{\lfloor n_1/2 \rfloor, \lfloor n_2/2 \rfloor, \ldots, \lfloor n_m/2 \rfloor}}{2} & (M \leqq 2) \\[10pt]
+\displaystyle\frac{f(n_1, n_2, \ldots, n_m)}{2} & (M\geqq 3)
 \end{cases}
 $$
 
@@ -299,7 +304,7 @@ function juzu(a)
 end
 ```
 
-**$M \leq 2$ の場合の追加項** `multinomial(q...)` は、各種類をちょうど半分ずつ（切り捨て）使った配置の数です。これが対称配置の候補となります。
+**$M \leqq 2$ の場合の追加項** `multinomial(q...)` は、各種類をちょうど半分ずつ（切り捨て）使った配置の数です。これが対称配置の候補となります。
 
 ### 従来の4つの場合分けとの関係
 
@@ -308,9 +313,9 @@ end
 1. **全て偶数個**：$M = 0$
 2. **奇数1色のみ**：$M = 1$
 3. **奇数2色**：$M = 2$
-4. **奇数3色以上**：$M \geq 3$
+4. **奇数3色以上**：$M \geqq 3$
 
-この4つを **$M \leq 2$** という単一条件に統合したのが、上記の公式の革新的なポイントです。
+この4つを **$M \leqq 2$** という単一条件に統合したのが、上記の公式の革新的なポイントです。
 
 ## Julia実装
 
@@ -479,7 +484,7 @@ println("数珠順列（巨大）juzu($a_huge) = ", juzu(a_huge))
 1. **友田の公式**は、バーンサイドの補題（コーシー・フロベニウスの定理）に基づく
 2. **最大公約数の約数**を調べるのは、配置の周期性を考慮するため
 3. **オイラーのトーシェント関数**は、原始的な周期を持つ配置を数えるため
-4. **数珠順列の条件「m ≤ 2」**は、対称配置の存在条件を表す
+4. **数珠順列の条件「$\bold{m \leqq 2}$」** は、対称配置の存在条件を表す
 5. **Julia実装**では、BigIntを使うことで任意精度の計算が可能
 
 この公式を理解することで、組合せ論と数論のつながりを実感できます。
