@@ -3,8 +3,12 @@ title: "Juliaで複素数変換を可視化：f(z) = z(z+1)の美しい曲線を
 emoji: "🌀"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: [julia, 複素数, 数学, 可視化, CairoMakie]
-published: false
+published: true
+published_at: 2025-12-24 00:03
 ---
+
+
+この記事は[Julia Advent Calendar 2025 シリーズ2](https://qiita.com/advent-calendar/2025/julia)の12月24日の記事です。
 
 ## はじめに
 

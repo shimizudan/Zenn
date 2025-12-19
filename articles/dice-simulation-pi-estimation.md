@@ -3,8 +3,12 @@ title: "サイコロで円周率を推定する：浜松医科大2025年入試�
 emoji: "🎲"
 type: "idea"
 topics: [julia, 数学, モンテカルロ法, 確率, 円周率]
-published: false
+published: true
+published_at: 2025-12-23 00:03
+
 ---
+
+この記事は[Julia Advent Calendar 2025 シリーズ2](https://qiita.com/advent-calendar/2025/julia)の12月23日の記事です。
 
 ## はじめに
 

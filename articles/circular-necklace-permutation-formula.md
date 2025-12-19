@@ -9,7 +9,8 @@ published_at: 2025-12-25 00:03 # 未来の日時を指定する
 ---
 
 
-この記事は [日曜数学 Advent Calendar 2025](https://adventar.org/calendars/12125) の12月25日の記事です。
+この記事は [日曜数学 Advent Calendar 2025](https://adventar.org/calendars/12125) 、
+[Julia Advent Calendar 2025 シリーズ2](https://qiita.com/advent-calendar/2025/julia)の12月25日の記事です。
 
 ## はじめに
 
