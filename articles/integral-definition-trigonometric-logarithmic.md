@@ -3,7 +3,7 @@ title: "積分による三角関数・対数関数の定義"
 emoji: "📐"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: ["数学", "julia", "微積分", "三角関数"]
-published: false
+published: true
 
 ---
 
