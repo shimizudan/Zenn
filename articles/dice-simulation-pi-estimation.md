@@ -190,7 +190,13 @@ Dict{Int64, Int64} with 7 entries:
 条件 $x_i^2 + y_i^2 \leq 10000$ を満たす点の個数 $N$ を数えると、半径100の円の面積を推定できます：
 
 $$
-\frac{N}{100} \approx \frac{\pi \times 100^2}{100^2} = \pi
+\frac{N}{100} \approx \frac{\frac{\pi \times 100^2}4}{100^2} = \frac{\pi}4
+$$
+
+4倍して
+
+$$
+\frac{4\times N}{100} \approx \pi
 $$
 
 したがって、**$\pi$ の近似値を知ることができます**。
