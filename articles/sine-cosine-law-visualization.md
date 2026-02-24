@@ -3,7 +3,7 @@ title: "正弦定理と余弦定理：証明・応用・Juliaによる可視化"
 emoji: "📐"
 type: "idea"
 topics: ["数学", "julia", "三角関数", "幾何"]
-published: false
+published: true
 
 ---
 
