@@ -125,7 +125,37 @@ function in_region(α; N=400)
 end
 ```
 
-ヒートマップで $\alpha$ の範囲を可視化すると，単位円 $C$ の内部に $\alpha$ がある場合と外部にある場合で像の形が大きく異なることがわかります。
+ヒートマップで $\alpha$ の範囲を可視化します。
+
+```julia
+Ng      = 300
+re_vals = LinRange(-3, 3, Ng)
+im_vals = LinRange(-3, 3, Ng)
+
+# 各 α について判定（行列形式で保存）
+mask = [in_region(a + b*im) for b in im_vals, a in re_vals]
+
+fig = CairoMakie.Figure(size=(600, 600))
+ax  = CairoMakie.Axis(fig[1, 1], xlabel="Re(α)", ylabel="Im(α)",
+                       title="D が正・負の実軸と共有点を持つ α の範囲",
+                       aspect=DataAspect())
+
+# ヒートマップ（青：条件を満たす，白：満たさない）
+CairoMakie.heatmap!(ax, re_vals, im_vals, mask', colormap=[:white, :steelblue])
+
+# 境界の輪郭線
+CairoMakie.contour!(ax, re_vals, im_vals, mask', levels=[0.5],
+                    color=:black, linewidth=1.5)
+
+# 単位円 C を赤破線で重ねる
+θp = LinRange(0, 2π, 400)
+CairoMakie.lines!(ax, cos.(θp), sin.(θp), color=:red, linewidth=1.5,
+                  linestyle=:dash, label="|z|=1 (C)")
+CairoMakie.axislegend(ax)
+fig
+```
+
+単位円 $C$ の内部に $\alpha$ がある場合と外部にある場合で像の形が大きく異なることがわかります。
 
 ![αの範囲ヒートマップ](/images/u-tokyo-2026-graph5d.png)
 
