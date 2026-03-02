@@ -44,8 +44,8 @@ function draw_frame!(ax, k)
         end
     end
 
-    CairoMakie.xlims!(ax, -5, 5)
-    CairoMakie.ylims!(ax, -8, 8)
+    CairoMakie.xlims!(ax, -3, 3)
+    CairoMakie.ylims!(ax, -3, 3)
     ax.title[] = "y = x³ - kx   (k = $(round(k, digits=2)))"
 end
 
@@ -53,14 +53,25 @@ end
 ks = LinRange(-1.0, 5.0, 100)
 
 fig = CairoMakie.Figure(size=(400, 400))
-ax  = CairoMakie.Axis(fig[1, 1], xlabel="x", ylabel="y")
+ax  = CairoMakie.Axis(fig[1, 1], xlabel="x", ylabel="y", aspect=DataAspect())
 
 CairoMakie.record(fig, "tangent_animation.gif", ks; framerate=12) do k
     draw_frame!(ax, k)
 end
+
+#VSCodeの.ipynbファイルで表示する場合
+using Base64
+
+gif_b64 = open("tangent_animation.gif", "r") do io
+    base64encode(read(io))
+end
+
+display("text/html", """
+<img src="data:image/gif;base64,$gif_b64" style="max-width:600px; height:auto;">
+""")
 ```
 
-![接線のアニメーション](/images/u-tokyo-2026-tangent-animation.gif)
+![接線のアニメーション](/images/tangent_animation.gif)
 
 $k$ が変化すると，3本の接線の交点がなす三角形の形が変わることがわかります。
 

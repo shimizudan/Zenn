@@ -96,6 +96,16 @@ fig
 
 $f(n) - g(n)$ の差を描くと，その構造がよりはっきりします。
 
+```julia
+diffs = fs .- gs
+fig2 = CairoMakie.Figure(size=(800, 400), fonts=(; regular="Hiragino Sans", bold="Hiragino Sans"))
+ax2 = CairoMakie.Axis(fig2[1, 1], xlabel="n", ylabel="f(n) - g(n)",
+                       title="f(n) - g(n) のグラフ（n = 1 〜 100）")
+CairoMakie.lines!(ax2, ns, diffs, linewidth=1.5, color=:purple)
+CairoMakie.hlines!(ax2, [0], color=:black, linewidth=0.8)
+fig2
+```
+
 ![f(n)-g(n)のグラフ](/images/u-tokyo-2026-graph6b.png)
 
 ### $g(n) = G$ のときに取り得る $f(n)$ の値

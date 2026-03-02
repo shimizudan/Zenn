@@ -23,6 +23,7 @@ using CairoMakie
 rs = 0.5:0.5:5.0
 θs = LinRange(0, 2π, 600)
 
+# 半径に対応したカラーマップ
 colors = cgrad(:turbo, length(rs))
 
 fig = CairoMakie.Figure(size=(1000, 500))
@@ -32,13 +33,23 @@ ax2 = CairoMakie.Axis(fig[1, 2], title="w-plane  w = (z - α)³,  α = $α",
                        xlabel="Re(w)", ylabel="Im(w)", aspect=DataAspect())
 
 for (i, r) in enumerate(rs)
-    zs = r .* exp.(im .* θs)    # z-平面上の同心円
-    ws = (zs .- α).^3           # w = (z - α)³ で変換
+    zs = r .* exp.(im .* θs)           # z-平面上の同心円
+    ws = (zs .- α).^3                  # w = (z - α)³ で変換
 
     col = colors[i / length(rs)]
+
     CairoMakie.lines!(ax1, real.(zs), imag.(zs), color=col, linewidth=1.5)
     CairoMakie.lines!(ax2, real.(ws), imag.(ws), color=col, linewidth=1.5)
 end
+
+# z-平面に α の位置をマーク
+CairoMakie.scatter!(ax1, [real(α)], [imag(α)], color=:black, markersize=8)
+CairoMakie.text!(ax1, real(α), imag(α) + 0.2, text="α", fontsize=14)
+
+# Colorbar で半径を示す
+CairoMakie.Colorbar(fig[1, 3], colormap=:turbo,
+                    limits=(minimum(rs), maximum(rs)), label="|z| = r")
+fig
 ```
 
 ![同心円の変換](/images/u-tokyo-2026-graph5a.png)
@@ -46,6 +57,8 @@ end
 ### 単位円 $|z|=1$ の像を描く
 
 ```julia
+using CairoMakie
+
 α = -3.0 + 0.0im
 θs = LinRange(0, 2π, 600)
 
@@ -59,7 +72,12 @@ ax2 = CairoMakie.Axis(fig[1, 2], title="w-plane  w = (z - α)³,  α = $α",
                        xlabel="Re(w)", ylabel="Im(w)", aspect=DataAspect())
 
 CairoMakie.lines!(ax1, real.(zs), imag.(zs), color=:steelblue, linewidth=2)
+CairoMakie.scatter!(ax1, [real(α)], [imag(α)], color=:black, markersize=8)
+CairoMakie.text!(ax1, real(α), imag(α) + 0.15, text="α", fontsize=14)
+
 CairoMakie.lines!(ax2, real.(ws), imag.(ws), color=:crimson, linewidth=2)
+
+fig
 ```
 
 ![単位円の像](/images/u-tokyo-2026-graph5b.png)
@@ -105,7 +123,13 @@ fig
 
 ### D が正・負の実軸と共有点を持つ $\alpha$ の範囲
 
+ヒートマップで $\alpha$ の範囲を可視化します。
+
 ```julia
+using CairoMakie
+
+# α を固定したとき，D = {(e^(it)-α)³} が
+# 正の実軸・負の実軸の両方と交わるかを判定
 function in_region(α; N=400)
     ts  = LinRange(0, 2π, N+1)
     ws  = (exp.(im .* ts) .- α).^3
@@ -114,46 +138,43 @@ function in_region(α; N=400)
 
     pos = false; neg = false
     for i in 1:N
+        # Im(w) の符号変化 → 実軸との交点
         if imw[i] * imw[i+1] < 0
-            f  = -imw[i] / (imw[i+1] - imw[i])
-            rc = rew[i] + f * (rew[i+1] - rew[i])
+            f  = -imw[i] / (imw[i+1] - imw[i])   # 線形補間
+            rc = rew[i] + f * (rew[i+1] - rew[i]) # Re(w) の推定値
             rc > 0 ? (pos = true) : (neg = true)
         end
         pos && neg && return true
     end
     return pos && neg
 end
-```
 
-ヒートマップで $\alpha$ の範囲を可視化します。
-
-```julia
-Ng      = 300
+# α のグリッド
+Ng      = 400
 re_vals = LinRange(-3, 3, Ng)
 im_vals = LinRange(-3, 3, Ng)
 
-# 各 α について判定（行列形式で保存）
 mask = [in_region(a + b*im) for b in im_vals, a in re_vals]
 
-fig = CairoMakie.Figure(size=(600, 600))
+fig = CairoMakie.Figure(size=(600, 600),fonts=(; regular="Hiragino Sans", bold="Hiragino Sans"))
 ax  = CairoMakie.Axis(fig[1, 1], xlabel="Re(α)", ylabel="Im(α)",
                        title="D が正・負の実軸と共有点を持つ α の範囲",
                        aspect=DataAspect())
 
-# ヒートマップ（青：条件を満たす，白：満たさない）
 CairoMakie.heatmap!(ax, re_vals, im_vals, mask', colormap=[:white, :steelblue])
 
 # 境界の輪郭線
 CairoMakie.contour!(ax, re_vals, im_vals, mask', levels=[0.5],
                     color=:black, linewidth=1.5)
 
-# 単位円 C を赤破線で重ねる
+# 単位円 C を参考に表示
 θp = LinRange(0, 2π, 400)
 CairoMakie.lines!(ax, cos.(θp), sin.(θp), color=:red, linewidth=1.5,
                   linestyle=:dash, label="|z|=1 (C)")
 CairoMakie.axislegend(ax)
 fig
 ```
+
 
 単位円 $C$ の内部に $\alpha$ がある場合と外部にある場合で像の形が大きく異なることがわかります。
 
