@@ -42,22 +42,29 @@ https://x.com/dannchu/status/2037803031862071797
 
 まず1回のシミュレーション（$n$ 人からスタート）を実装します。ルールは「多数派が残る、同数なら全員残って次ラウンドへ」。最終的に残る人数と、かかったラウンド数を返します。
 
+**収束の判定方法：** 人数が変化しなくなった時点を「収束」とみなしますが、タイ（同数）が偶然連続することもあるため、「同じ値が連続して `stable_threshold` 回続いたら収束」と判定します。ここでは `stable_threshold=100` としています。ただし、その判定のために費やした100回分はラウンド数から引き、**実際に人数が変化し続けた最小のラウンド数**を返します。
+
 ```julia
-function simulate_once(n::Int)
+function simulate_once(n::Int; stable_threshold::Int=100)
     rounds = 0
     current = n
-    while current > 2
+    stable_count = 0
+    while stable_count < stable_threshold
         count_heads = sum(rand(0:1, current))
         count_tails = current - count_heads
         rounds += 1
-        if count_heads > count_tails
-            current = count_heads       # 表が多数派 → 裏を除外
+        next = if count_heads > count_tails
+            count_heads     # 表が多数派 → 裏を除外
         elseif count_tails > count_heads
-            current = count_tails       # 裏が多数派 → 表を除外
+            count_tails     # 裏が多数派 → 表を除外
+        else
+            current         # 同数（タイ）→ 全員残る
         end
-        # 同数（タイ）のときは current そのまま → 次のラウンドへ
+        stable_count = (next == current) ? stable_count + 1 : 0
+        current = next
     end
-    return current, rounds
+    # 収束判定の100回分を引いて、値が変化し続けた実際のラウンド数を返す
+    return current, rounds - stable_threshold
 end
 
 # テスト
@@ -70,7 +77,7 @@ end
 ```
 n=3 → 最終人数: 2 人（1 ラウンド）
 n=5 → 最終人数: 2 人（2 ラウンド）
-n=10 → 最終人数: 2 人（10 ラウンド）
+n=10 → 最終人数: 2 人（6 ラウンド）
 n=20 → 最終人数: 2 人（9 ラウンド）
 ```
 
@@ -108,7 +115,7 @@ println("ラウンド数の最大: ", maximum(round_counts))
 ```
 n=10, 試行回数=10000
 最終人数の平均: 2.0
-ラウンド数の平均: 6.069
+ラウンド数の平均: 6.075
 ラウンド数の最大: 19
 ```
 
@@ -137,20 +144,20 @@ end
 n  | ラウンド数の平均 | ラウンド数の最大
 ---|-----------------|----------------
 2  | 0.0             | 0
-4  | 3.34             | 18
-6  | 4.77             | 18
-8  | 5.12             | 18
-10  | 6.04             | 20
-12  | 6.06             | 19
-14  | 6.51             | 20
-16  | 6.72             | 22
-18  | 7.19             | 22
-20  | 7.17             | 23
-22  | 7.34             | 27
-24  | 7.48             | 23
-26  | 7.72             | 20
-28  | 7.81             | 25
-30  | 8.02             | 25
+4  | 3.32             | 15
+6  | 4.78             | 18
+8  | 5.1              | 17
+10  | 6.06             | 20
+12  | 6.04             | 23
+14  | 6.5              | 22
+16  | 6.73             | 20
+18  | 7.18             | 20
+20  | 7.15             | 23
+22  | 7.37             | 22
+24  | 7.47             | 25
+26  | 7.73             | 23
+28  | 7.81             | 22
+30  | 8.04             | 22
 ```
 
 $n$ が増えるにつれてラウンド数の期待値も増加しますが、対数的な増加であることがわかります。
@@ -272,18 +279,25 @@ plot!(p, ns_fit, log2.(ns_fit) .- 1,
 
 ```julia
 # 1試行の人数推移を可視化
-function simulate_trace(n::Int)
+function simulate_trace(n::Int; stable_threshold::Int=100)
     history = [n]
     current = n
-    while current > 2
+    stable_count = 0
+    while stable_count < stable_threshold
         count_heads = sum(rand(0:1, current))
         count_tails = current - count_heads
-        if count_heads > count_tails
-            current = count_heads
+        next = if count_heads > count_tails
+            count_heads
         elseif count_tails > count_heads
-            current = count_tails
+            count_tails
+        else
+            current
         end
-        push!(history, current)
+        stable_count = (next == current) ? stable_count + 1 : 0
+        current = next
+        if stable_count == 0  # 値が変化したときだけ記録
+            push!(history, current)
+        end
     end
     return history
 end
