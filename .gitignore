@@ -2,3 +2,4 @@ node_modules
 .DS_Store
 work/*
 !work/trolley-problem-simulation-328
+!work/liar-problem-160
