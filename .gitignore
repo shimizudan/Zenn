@@ -3,3 +3,4 @@ node_modules
 work/*
 !work/trolley-problem-simulation-328
 !work/liar-problem-160
+!work/tournament-analysis
