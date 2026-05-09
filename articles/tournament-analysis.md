@@ -7,6 +7,12 @@ published: true
 math: true
 ---
 
+Xで[@kaitou_ryaku](https://x.com/kaitou_ryaku)さんの次のポストを見かけました。面白そうだったので，考えてみました。
+
+https://x.com/kaitou_ryaku/status/2052330801862463833
+
+---
+
 ## 問題の設定
 
 $2^n$ 人の参加者がいるトーナメントを考えます。
